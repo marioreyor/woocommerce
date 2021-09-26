@@ -1,0 +1,28 @@
+/* _modal.scss:11 */
+.modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
+  /* _modal.scss:18 */
+  .modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 
+    display: none;
+    overflow: hidden;
+  }
+  
+  /* _modal.scss:44 */
+  .modal.fade & {
+    @include transition($modal-transition);
+    transform: translate(0, -25%);
+  }
+  
+  /* _modal.scss:48 */
+  .modal.show & {
+    transform: translate(0, 0);
+  }
