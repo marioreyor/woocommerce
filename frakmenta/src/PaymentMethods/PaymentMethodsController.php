@@ -63,7 +63,8 @@ class PaymentMethodsController {
             $product = wc_get_product( get_the_id() );
         }
 
-        return $product->is_on_sale()?$product->get_sale_price():$product->get_regular_price();
+        $price = $product->is_on_sale()?$product->get_sale_price():$product->get_regular_price();
+        return strval($price);
     }
 
 

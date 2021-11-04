@@ -101,9 +101,16 @@ function get_commerce_limits(){
 
 function getProductPriceByMeta(){
     let tags = jQuery('p.price').children('.woocommerce-Price-amount.amount').children('bdi');
+    let pos = 0;
     if (tags.length==0) {
         tags = jQuery('.woocommerce-Price-amount').children('bdi');
-        price = Number.parseFloat((tags[tags.length-1].outerText.replace('€','')).replace(',','.')).toFixed(2);
+
+        if ((tags.length-1) > 1)
+            pos = 1;
+        else
+            pos=tags.length-1;
+
+        price = Number.parseFloat((tags[pos].outerText.replace('€','')).replace(',','.')).toFixed(2);
     } else {
         price = Number.parseFloat((tags[0].outerText.replace('€','')).replace(',','.')).toFixed(2);
     }

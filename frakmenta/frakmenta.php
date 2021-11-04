@@ -23,7 +23,7 @@
  * Plugin Name:             Frakmenta
  * Plugin URI:              https://frakmenta.com/desarrolladores
  * Description:             Frakmenta Payment Plugin
- * Version:                 1.1.3
+ * Version:                 1.1.4
  * Author:                  Sistemas Findirect
  * Author URI:              https://www.frakmenta.com
  * Copyright:               Copyright (c) Frakmenta, Findirect. (https://www.frakmenta.com)
@@ -45,7 +45,7 @@ if (!defined('ABSPATH')) {
 /**
  * Plugin version
  */
-define('FRAKMENTA_PLUGIN_VERSION', '1.1.3');
+define('FRAKMENTA_PLUGIN_VERSION', '1.1.4');
 
 /**
  * Plugin URL
