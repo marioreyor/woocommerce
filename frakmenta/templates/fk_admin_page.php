@@ -1,6 +1,37 @@
-<?php
+<?php declare(strict_types=1);
+/**
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the Frakmenta plugin
+ * to newer versions in the future. If you wish to customize the plugin for your
+ * needs please document your changes and make backups before you update.
+ *
+ * @category    Frakmenta
+ * @package     Connect
+ * @author      Sistemas Findirect <desarrollo-frakmenta@findirect.com>
+ * @copyright   Copyright (c) Frakmenta, Findirect. (https://www.frakmenta.com)
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 $fk_add_meta_nonce = wp_create_nonce( 'nds_add_user_meta_form_nonce' );
-$fk_parameters = json_decode(do_shortcode('[fk_admin_parameters]'));
+$fk_parameters = array(
+        "FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'),
+        "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'),
+        "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
+        "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'),
+        "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'),
+        "FRAKMENTA_MODE" => get_option('FRAKMENTA_MODE'),
+        "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'),
+        "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT')
+    );
+
 if (!empty($_POST['submitButton'])){
     echo 'recibido un submit de la pagina de configuración';
     die();
@@ -34,24 +65,23 @@ if (!empty($_POST['submitButton'])){
 
                 <!--{if $language_store}-->
                 <div class="frakmenta-clear"></div><hr>
-                <input type="hidden" id="fk_exists" value="<?php echo $fk_parameters->FRAKMENTA_EXIST_ACCOUNT;?>">
+                <input type="hidden" id="fk_exists" value="<?php echo $fk_parameters['FRAKMENTA_EXIST_ACCOUNT'];?>">
 
 
 
                 <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="frakmenta_configuration">
-
-
-                    <input type="hidden" name="action" value="fk_form_response">
+                    <input type="hidden" name="action" value="fk_form_response" />
+                    <input type="hidden" name="_wp_http_referer" value="/wordpress/wp-admin/admin.php?page=frakmenta-settings" />
                     <input type="hidden" name="fk_add_user_meta_nonce" value="<?php echo $fk_add_meta_nonce ?>" />
-                    <input type="hidden" name="fk_mode" id="fk_mode" value="<?php echo $fk_parameters->FRAKMENTA_MODE;?>"/>
+                    <input type="hidden" name="fk_mode" id="fk_mode" value="<?php echo $fk_parameters['FRAKMENTA_MODE'];?>"/>
 
                     <!--Frakmenta configuration-->
                     <div class="box">
                         <h3 class="inline">Configurar frakmenta es muy sencillo</h3>
                         <div style="line-height: 20px; margin-top: 8px">
                             <label>¿Tienes una cuenta de frakmenta?</label>&nbsp;&nbsp;
-                            <input type="radio" name="fk_account" id="frakmenta_business_account_no" onclick="frakmentaAccount(0)" value="0" <?php if ($fk_parameters->FRAKMENTA_EXIST_ACCOUNT==0) echo 'checked="checked"';?> /> <label for="frakmenta_business_account_no">No</label>
-                            <input type="radio" name="fk_account" id="frakmenta_business_account_yes" onclick="frakmentaAccount(1)" value="1" <?php if ($fk_parameters->FRAKMENTA_EXIST_ACCOUNT==1) echo 'checked="checked"';?> style="margin-left: 14px" /> <label for="frakmenta_business_account_yes">Si</label>
+                            <input type="radio" name="fk_account" id="frakmenta_business_account_no" onclick="frakmentaAccount(0)" value="0" <?php if ($fk_parameters['FRAKMENTA_EXIST_ACCOUNT']==0) echo 'checked="checked"';?> /> <label for="frakmenta_business_account_no">No</label>
+                            <input type="radio" name="fk_account" id="frakmenta_business_account_yes" onclick="frakmentaAccount(1)" value="1" <?php if ($fk_parameters['FRAKMENTA_EXIST_ACCOUNT']==1) echo 'checked="checked"';?> style="margin-left: 14px" /> <label for="frakmenta_business_account_yes">Si</label>
                         </div>
                     </div>
 
@@ -119,17 +149,18 @@ if (!empty($_POST['submitButton'])){
                         <div class="column-options-fk">
                             <strong>¿Deseas activar el simulador de frakmenta en los productos?</strong><br>
                             <select name="fk_sim_product" style="width:100px">
-                                <option value="1" <?php if ($fk_parameters->FRAKMENTA_PRODUCT_OPTION==1) echo "selected";?> >Si</option>
-                                <option value="0" <?php if ($fk_parameters->FRAKMENTA_PRODUCT_OPTION==0) echo "selected";?>>No</option>
+                                <option value="1" <?php if ($fk_parameters['FRAKMENTA_PRODUCT_OPTION']==1) echo "selected";?> >Si</option>
+                                <option value="0" <?php if ($fk_parameters['FRAKMENTA_PRODUCT_OPTION']==0) echo "selected";?>>No</option>
                             </select>
                         </div>
-                        <div class="column-options-fk">
-                            <strong>¿Donde quieres colocar el simulador de frakmenta?</strong><br>
-                            <select name="fk_location_simulator">
-                                <option value=".product-add-to-cart" >En la parte inferior del importe del producto</option>
-                                <option value=".social-sharing" >En la parte inferior de las redes sociales</option>
-                            </select>
-                        </div>
+                        <input type="hidden" name="fk_location_simulator" value=".product-add-to-cart">
+<!--                        <div class="column-options-fk">-->
+<!--                            <strong>¿Donde quieres colocar el simulador de frakmenta?</strong><br>-->
+<!--                            <select name="fk_location_simulator">-->
+<!--                                <option value=".product-add-to-cart" >En la parte inferior del importe del producto</option>-->
+<!--                                <option value=".social-sharing" >En la parte inferior de las redes sociales</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
                     </div>
                     <br /><br /><br />
                     <br /><br />
@@ -141,7 +172,7 @@ if (!empty($_POST['submitButton'])){
                 <div class="frakmenta-hide box-fk" data-tls-check-section id="test-fk">
                     <h3 class="inline">Prueba tu conexión a frakmenta</h3>
                     <br /><br />
-                    <span class="ui button teal sm btn-frakmenta" data-url="<?php echo $fk_parameters->FRAKMENTA_URL;?>" data-token="<?php echo $fk_parameters->FRAKMENTA_PUBLIC_KEY;?>" style="cursor: pointer;display: inline-block;" id="test_fk_connection"><b>Probar conexión a frakmenta</b></span>
+                    <span class="ui button teal sm btn-frakmenta" data-url="<?=$fk_parameters['FRAKMENTA_URL'];?>" data-token="<?=$fk_parameters['FRAKMENTA_PUBLIC_KEY'];?>" style="cursor: pointer;display: inline-block;" id="test_fk_connection"><b>Probar conexión a frakmenta</b></span>
                     <div style="margin-top: 10px;" id="test_fk_conection_result"></div>
                 </div>
             </div>

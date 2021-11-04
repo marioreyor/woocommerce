@@ -1,78 +1,106 @@
-<?php # -*- coding: utf-8 -*-
-// phpcs:disable
-
+<?php declare(strict_types=1);
 /**
- * Plugin Name: Frakmenta ecommerce
- * Description: Pago con frakmenta de compras en comercios
- * Author: Sistemas findirect
- * Author URI: jose_baez@findirect.com
- * Version: 1.0.0
- * WC requires at least: 3.6.4
- * WC tested up to: 4.1
- * License: GPLv2+
- * Text Domain: woo-frakmenta
- * Domain Path: /languages/
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade the Frakmenta plugin
+ * to newer versions in the future. If you wish to customize the plugin for your
+ * needs please document your changes and make backups before you update.
+ *
+ * @category    Frakmenta
+ * @package     Connect
+ * @author      Sistemas Findirect <desarrollo-frakmenta@findirect.com>
+ * @copyright   Copyright (c) Frakmenta, Findirect. (https://www.frakmenta.com)
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ * Plugin Name:             Frakmenta
+ * Plugin URI:              https://frakmenta.com/desarrolladores
+ * Description:             Frakmenta Payment Plugin
+ * Version:                 1.1.3
+ * Author:                  Sistemas Findirect
+ * Author URI:              https://www.frakmenta.com
+ * Copyright:               Copyright (c) Frakmenta, Findirect. (https://www.frakmenta.com)
+ * License:                 GNU General Public License v3.0
+ * License URI:             http://www.gnu.org/licenses/gpl-3.0.html
+ * Requires at least:       5.0
+ * Tested up to:            5.8.0
+ * WC requires at least:    4.2.0
+ * WC tested up to:         5.6.0
+ * Requires PHP:            7.2
+ * Text Domain:             frakmenta
+ * Domain Path:             /languages
  */
 
-require_once plugin_dir_path(__FILE__) . 'includes/frakmenta_functions.php';
-require_once plugin_dir_path(__FILE__) . 'includes/fk_payment.php';
-
-function admin_fk_plugin() {
-    include('views/admin/fk_admin_page.php');
+if (!defined('ABSPATH')) {
+    die();
 }
 
-function fk_admin_parameters(){
-    //function in plugin file with return value,
-    //  custom fetch query
-    frakmenta_default_configuration();
-    return json_encode(array(
-        "FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'),
-        "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'),
-        "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
-        "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'),
-        "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'),
-        "FRAKMENTA_MODE" => get_option('FRAKMENTA_TEST_MODE'),
-        "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'),
-        "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT')
-    ));
+/**
+ * Plugin version
+ */
+define('FRAKMENTA_PLUGIN_VERSION', '1.1.3');
+
+/**
+ * Plugin URL
+ * Do not include a trailing slash. Should be include it in the string with which is concatenated
+ */
+define('FRAKMENTA_PLUGIN_URL', plugins_url('', __FILE__));
+
+/**
+ * Plugin dir path
+ * Include a trailing slash. Should not be include it in the string with which is concatenated
+ */
+define('FRAKMENTA_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
+
+/**
+ * Composer's autoload file.
+ */
+require_once FRAKMENTA_PLUGIN_DIR_PATH . 'vendor/autoload.php';
+
+use Frakmenta\WooCommerce\Utils\Activator;
+use Frakmenta\WooCommerce\Main;
+
+/**
+ * The code that runs during plugin activation.
+ * The class is documented in src/utils/Activator.php
+ *
+ * @param bool $network_wide
+ * @see     https://developer.wordpress.org/reference/functions/register_activation_hook/
+ *
+ * @since   4.0.0
+ */
+function activate_frakmenta(bool $network_wide): void
+{
+    $activator = new Activator();
+    $activator->activate($network_wide);
 }
-//
-//
-//namespace WCFrakmenta;
-//
-//use Closure;
-//
-//$bootstrap = Closure::bind(
-//    function () {
-//
-//        /**
-//         * @return bool
-//         */
-//        function autoload()
-//        {
-//            $autoloader = __DIR__ . '/vendor/autoload.php';
-//            if (file_exists($autoloader)) {
-//                /** @noinspection PhpIncludeInspection */
-//                require $autoloader;
-//
-//                require_once __DIR__ . '/src/inc/functions.php';
-//            }
-//
-//            return class_exists(Frakmenta::class);
-//        }
-//
-//        if (!autoload()) {
-//            return;
-//        }
-//
-//        $bootstrapper = new Bootstrapper(resolve(), __FILE__);
-//
-//        add_action('plugins_loaded', [$bootstrapper, 'bootstrap'], 0);
-//        add_action('init', function () {
-//            load_plugin_textdomain('woo-frakmenta');
-//        });
-//    },
-//    null
-//);
-//
-//$bootstrap();
+
+register_activation_hook(__FILE__, 'activate_frakmenta');
+
+/**
+ * Init plugin
+ *
+ * @since    4.0.0
+ * @see      https://developer.wordpress.org/plugins/hooks/
+ */
+function init_frakmenta()
+{
+    if (!function_exists('is_plugin_active')) {
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+    }
+    if (is_plugin_active('woocommerce/woocommerce.php')) {
+        $plugin = new Main();
+        $plugin->init();
+    }
+}
+
+init_frakmenta();
+
+

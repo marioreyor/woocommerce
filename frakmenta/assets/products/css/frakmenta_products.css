@@ -1,0 +1,19 @@
+.frakmenta-advertising{
+    margin-bottom: 1em;
+    margin-left: 2px;
+    margin-right: 10px;
+    height: 66px;
+    display: -webkit-inline-box;
+    justify-content: flex-start;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+}
+
+.logo-advertising{
+    margin-top: -10px;
+    width: 106px;
+    height: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+}

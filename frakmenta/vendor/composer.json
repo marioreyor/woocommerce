@@ -1,0 +1,17 @@
+{
+    "name": "vendor/frakmenta",
+    "description": "Frakmenta plugin woocommerce definition",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Jose Baez",
+            "email": "jose_baez@frakmenta.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Frakmenta\\": "src/"
+        }
+    }
+}
