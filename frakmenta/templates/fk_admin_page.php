@@ -121,7 +121,7 @@ if (!empty($_POST['submitButton'])){
                         <br /><br />
 
                         <div class="frakmenta-hide" id="configuration">
-                            <h4>Indica a continuación tu información de conexión con frakmenta a Prestashop</h4>
+                            <h4>Indica a continuación tu información de conexión con frakmenta a Woocommerce</h4>
 
                             <div id="fk-mode">
                                 <p><span class="frakmenta-bold">Modo de conexión hacia frakmenta<br/><br/></span></p>
