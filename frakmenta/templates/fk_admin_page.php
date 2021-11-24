@@ -26,6 +26,7 @@ $fk_parameters = array(
         "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'),
         "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
         "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'),
+        "FRAKMENTA_PRIVATE_KEY" => get_option('FRAKMENTA_PRIVATE_KEY'),
         "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'),
         "FRAKMENTA_MODE" => get_option('FRAKMENTA_MODE'),
         "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'),
@@ -131,11 +132,20 @@ if (!empty($_POST['submitButton'])){
                             <div id="standard-credentials" style="display: block" >
                             <dl>
                                 <dt><label for="api_signature">Código e-commerce</label></dt>
-                                <dd><input type='number' size="10" name="fk_merchant_id" id="fk_merchant_id" autocomplete="off" required /></dd>
+                                <dd>
+                                    <input type='number' size="10" name="fk_merchant_id" id="fk_merchant_id"
+                                           autocomplete="off" required value="<?php echo $fk_parameters['FRAKMENTA_MERCHANT_ID'];?>" />
+                                </dd>
                                 <dt><label for="api_username">Llave pública</label></dt>
-                                <dd><input type='text' name="fk_public_key" id="fk_public_key" autocomplete="off" size="85" required/></dd>
+                                <dd>
+                                    <input type='text' name="fk_public_key" id="fk_public_key"
+                                           autocomplete="off" size="85" required value="<?php echo $fk_parameters['FRAKMENTA_PUBLIC_KEY'];?>" />
+                                </dd>
                                 <dt><label for="api_password">Llave privada</label></dt>
-                                <dd><input type='text' size="85" name="fk_private_key" id="fk_private_key" autocomplete="off" required/></dd>
+                                <dd>
+                                    <input type='text' size="85" name="fk_private_key" id="fk_private_key"
+                                           autocomplete="off" required value="<?php echo $fk_parameters['FRAKMENTA_PRIVATE_KEY'];?>" />
+                                </dd>
                             </dl>
                             <div class="frakmenta-clear"></div>
                             <span class="description">Por favor verifica que la información proporcionada esté completa</span>
