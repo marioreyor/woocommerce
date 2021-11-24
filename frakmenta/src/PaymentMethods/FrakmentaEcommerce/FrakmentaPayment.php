@@ -55,9 +55,12 @@ class FrakmentaPayment extends BasePaymentMethod
         return ($this->get_option('direct', 'yes') === 'yes') ? 'direct' : 'redirect';
     }
 
-    public function get_payment_method_title_checkout($minImport = 0, $maxImport = 0, $totalCart = 0): string
+    public function get_payment_method_title_checkout($minImport = 0, $maxImport = 0): string
     {
         $title = 'Frakmenta';
+
+        global $woocommerce;
+        $totalCart = $woocommerce->cart->total;
 
         if (floatval($totalCart)>0){
             if (floatval($totalCart)>floatval($minImport) && floatval($totalCart)<floatval($maxImport) && floatval($totalCart)>0)

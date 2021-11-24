@@ -66,20 +66,11 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
      */
     public $frakmentaMerchantLimits;
 
-    public $totalCart;
-
-    public $realTotalCart;
-
 
     /**
      * Construct for Core class.
      */
     public function __construct() {
-        global $woocommerce;
-
-        $this->realTotalCart = floatval(number_format(floatval($woocommerce->cart->total), 2, '.', ''));
-        $this->totalCart = $this->realTotalCart*100;
-
         $this->frakmentaMerchantLimits = $this->get_payment_mechant_limits();
         $this->max_amount          = $this->frakmentaMerchantLimits['max_import'];
         $this->min_amount          = $this->frakmentaMerchantLimits['min_import'];
@@ -87,8 +78,12 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         $this->id                  = $this->get_payment_method_id();
         $this->type                = $this->get_payment_method_type();
         $this->method_title        = $this->get_payment_method_title();
-        if (is_checkout())
-            $this->method_title    = $this->get_payment_method_title_checkout(floatval($this->frakmentaMerchantLimits['min_import']), floatval($this->frakmentaMerchantLimits['max_import']), $this->realTotalCart);
+        if (is_checkout()) {
+            $this->method_title    = $this->get_payment_method_title_checkout(
+                floatval($this->frakmentaMerchantLimits['min_import']),
+                floatval($this->frakmentaMerchantLimits['max_import'])
+            );
+        }
 
         $this->method_description  = $this->get_payment_method_description();
         $this->gateway_code        = $this->get_payment_method_code();
@@ -101,8 +96,12 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
 
         $this->enabled              = $this->get_option( 'enabled', 'no' );
         $this->title                = $this->get_payment_method_title();
-        if (is_checkout())
-            $this->title            = $this->get_payment_method_title_checkout(floatval($this->frakmentaMerchantLimits['min_import']), floatval($this->frakmentaMerchantLimits['max_import']), $this->realTotalCart);
+        if (is_checkout()) {
+            $this->title            = $this->get_payment_method_title_checkout(
+                floatval($this->frakmentaMerchantLimits['min_import']),
+                floatval($this->frakmentaMerchantLimits['max_import'])
+            );
+        }
 
         $this->description          = $this->get_option( 'description' );
         $this->countries            = $this->get_option( 'countries' );
@@ -229,12 +228,16 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
      * @return  mixed
      */
     public function payment_fields() {
-        if ($this->realTotalCart>=$this->min_amount && $this->realTotalCart<=$this->max_amount)
+        global $woocommerce;
+        $realTotalCart = $woocommerce->cart->total;
+        $totalCart = $realTotalCart * 100;
+
+        if ($realTotalCart >= $this->min_amount && $realTotalCart <= $this->max_amount)
             echo "<input type='hidden' name='validate_payfrakmenta' value='1' required readonly>";
         else
             echo "<input type='hidden' name='validate_payfrakmenta' required readonly>";
 
-        echo "<div class='col-img-payment' style='margin-bottom:1em'><div class='fk-installments' id='fk-widget-installments' data-product_price='$this->totalCart'></div></div>";
+        echo "<div class='col-img-payment' style='margin-bottom:1em'><div class='fk-installments' id='fk-widget-installments' data-product_price='$totalCart'></div></div>";
     }
 
     /**
