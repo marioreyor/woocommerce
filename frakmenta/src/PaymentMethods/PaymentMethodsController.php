@@ -56,17 +56,18 @@ class PaymentMethodsController {
         }
     }
 
-    private function get_product_price() : string {
+    private function get_product_price() : string
+    {
         global $product;
 
         if ( ! is_a( $product, 'WC_Product' ) ) {
             $product = wc_get_product( get_the_id() );
         }
 
-        $price = $product->is_on_sale()?$product->get_sale_price():$product->get_regular_price();
+        $price = wc_get_price_including_tax($product);
+
         return strval($price);
     }
-
 
     public function enqueue_scripts(): void {
 
@@ -100,8 +101,6 @@ class PaymentMethodsController {
         }
 
     }
-
-
 
     /**
      * Merge existing gateways and Frakmenta
