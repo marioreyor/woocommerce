@@ -9,7 +9,7 @@
  *
  * @category    Frakmenta
  * @package     Connect
- * @author      Sistemas Findirect <desarrollo-frakmenta@findirect.com>
+ * @author      Findirect <desarrollo-frakmenta@findirect.com>
  * @copyright   Copyright (c) Frakmenta, Findirect. (https://www.frakmenta.com)
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
@@ -23,8 +23,8 @@
  * Plugin Name:             Frakmenta
  * Plugin URI:              https://frakmenta.com/desarrolladores
  * Description:             Frakmenta Payment Plugin
- * Version:                 1.1.6
- * Author:                  Sistemas Findirect
+ * Version:                 1.1.5
+ * Author:                  Findirect
  * Author URI:              https://www.frakmenta.com
  * Copyright:               Copyright (c) Frakmenta, Findirect. (https://www.frakmenta.com)
  * License:                 GNU General Public License v3.0
@@ -45,7 +45,7 @@ if (!defined('ABSPATH')) {
 /**
  * Plugin version
  */
-define('FRAKMENTA_PLUGIN_VERSION', '1.1.6');
+define('FRAKMENTA_PLUGIN_VERSION', '1.1.5');
 
 /**
  * Plugin URL
