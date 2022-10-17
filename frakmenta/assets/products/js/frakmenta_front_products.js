@@ -51,7 +51,7 @@ function product_simulator_pay(){
     else
         priceAbsolute = parseFloat(productPriceFK);
 
-    cant = document.getElementsByName('quantity')=='undefined'?1:document.getElementsByName('quantity')[0].attributes[7].nodeValue;
+    cant = document.getElementsByName('quantity')=='undefined'?1:document.getElementsByName('quantity')[0].attributes.value.value;
     pricePlain = priceAbsolute.toFixed(2);
     price = parseInt(pricePlain*100);
     if (price>0){
