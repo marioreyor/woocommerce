@@ -90,6 +90,7 @@ register_activation_hook(__FILE__, 'activate_frakmenta');
  */
 function init_frakmenta()
 {
+    error_log("Hpla");
     if (!function_exists('is_plugin_active')) {
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
