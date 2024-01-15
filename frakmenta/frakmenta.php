@@ -94,7 +94,7 @@ function init_frakmenta()
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
     if (is_plugin_active('woocommerce/woocommerce.php')) {
-        $plugin = new Main();
+        $plugin = new Frakmenta\WooCommerce\Main();
         $plugin->init();
     }
 }
