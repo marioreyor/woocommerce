@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ba2d619bee7b09eb4364371065db7e815cd218f1',
+        'reference' => '24975608cf750a9292bfcd927033df03051c58d9',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ba2d619bee7b09eb4364371065db7e815cd218f1',
+            'reference' => '24975608cf750a9292bfcd927033df03051c58d9',
             'dev_requirement' => false,
         ),
         'phpstan/phpstan' => array(
