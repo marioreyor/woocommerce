@@ -58,7 +58,6 @@ class OrderService {
     }
 
     /**
-     * @param WC_Order             $order
      * @param string               $gateway_code
      * @param string               $type
      * @param GatewayInfoInterface $gateway_info
@@ -66,7 +65,7 @@ class OrderService {
      */
     public function create_order_frakmenta(WC_Order $order): string {
 
-        $cart_products = Array();
+        $cart_products = [];
 
         foreach( $order->get_items() as $item_id => $item ) {
 
@@ -78,7 +77,7 @@ class OrderService {
 
             array_push($cart_products, [
                 'id' => strval($item->get_product_id()),
-                'name' => substr($item->get_name(), 0, 900),
+                'name' => substr((string) $item->get_name(), 0, 900),
                 'quantity' => $item->get_quantity(),
                 'price' => number_format(floatval($item->get_total()),2, '.',''),
                 'tax_rate' => number_format(floatval($item->get_total_tax()),2, '.',''),
@@ -177,7 +176,7 @@ class OrderService {
 
         $response = $this->connectApi->connection($frakmenta_parameters['FRAKMENTA_URL']."/api/fk/v2/operations", $data, 'POST');
 
-        $response_frakmenta = json_decode($response);
+        $response_frakmenta = json_decode((string) $response);
 
         if (strtoupper($response_frakmenta->status)!='OK'){
             Logger::log_error( 'Error en la operacion de frakmenta:' . json_encode($data));
@@ -211,7 +210,7 @@ class OrderService {
 
         $response = $this->connectApi->connection($frakmenta_parameters['FRAKMENTA_URL'].'/api/fk/v2/operations/status', $data, 'POST');
 
-        $response_frakmenta = json_decode($response);
+        $response_frakmenta = json_decode((string) $response);
 
         if ($response_frakmenta->messages[0]=='La operación ha sido aceptada'){
             if ($order->get_status()=='pending'){

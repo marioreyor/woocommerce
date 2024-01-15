@@ -107,14 +107,14 @@ class FrakmentaPayment extends BasePaymentMethod
     public function add_form_fields(): array
     {
         $form_fields = parent::add_form_fields();
-        $form_fields['direct'] = array(
+        $form_fields['direct'] = [
             'title' => __('Transaction Type', 'frakmenta'),
             /* translators: %1$: The payment method title */
             'label' => sprintf(__('Enable direct %1$s', 'frakmenta'), 'Frakmenta'),
             'type' => 'checkbox',
             'default' => 'yes',
             'desc_tip' => __('If enabled, additional information can be entered during WooCommerce checkout. If disabled, additional information will be requested on the Frakmenta payment page.', 'Frakmenta'),
-        );
+        ];
         return $form_fields;
     }
 
@@ -123,7 +123,7 @@ class FrakmentaPayment extends BasePaymentMethod
      */
     public function get_checkout_fields_ids(): array
     {
-        return array('salutation', 'birthday');
+        return ['salutation', 'birthday'];
     }
 
     /**
@@ -147,7 +147,7 @@ class FrakmentaPayment extends BasePaymentMethod
             $apiFrakmenta = new APIService();
             $response = $apiFrakmenta->connection($frakmenta_parameters['FRAKMENTA_URL'] . '/api/fk/v2/limits?', $data, 'GET');
 
-            $limits = json_decode($response);
+            $limits = json_decode((string) $response);
 
             if ($limits->status != 'ok') {
                 $max_import = 1000;
@@ -162,10 +162,7 @@ class FrakmentaPayment extends BasePaymentMethod
             $min_import = 59;
         }
 
-        return array(
-            "max_import" => $max_import,
-            "min_import" => $min_import
-            );
+        return ["max_import" => $max_import, "min_import" => $min_import];
     }
 
 }

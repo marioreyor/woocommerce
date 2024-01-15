@@ -74,7 +74,7 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         $this->frakmentaMerchantLimits = $this->get_payment_mechant_limits();
         $this->max_amount          = $this->frakmentaMerchantLimits['max_import'];
         $this->min_amount          = $this->frakmentaMerchantLimits['min_import'];
-        $this->supports            = array( 'products');
+        $this->supports            = ['products'];
         $this->id                  = $this->get_payment_method_id();
         $this->type                = $this->get_payment_method_type();
         $this->method_title        = $this->get_payment_method_title();
@@ -107,17 +107,14 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         $this->countries            = $this->get_option( 'countries' );
         $this->initial_order_status = $this->get_option( 'initial_order_status', false );
         $this->initial_order_status = $this->get_option( 'initial_order_status', false );
-        $this->errors               = array();
+        $this->errors               = [];
 
         add_action(
             'woocommerce_update_options_payment_gateways_' . $this->id,
-            array(
-                $this,
-                'process_admin_options',
-            )
+            [$this, 'process_admin_options']
         );
 
-        add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'display_errors' ));
+        add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'display_errors']);
     }
 
     /**
@@ -126,7 +123,7 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
      * @return string
      */
     private function get_logo(): string {
-        $language = substr( get_locale(), 0, 2 );
+        $language = substr( (string) get_locale(), 0, 2 );
 
         $icon = $this->get_payment_method_icon();
 
@@ -163,7 +160,7 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
      * @return array
      */
     public function get_checkout_fields_ids(): array {
-        return array();
+        return [];
     }
 
     /**
@@ -172,35 +169,7 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
      * @return  array
      */
     public function add_form_fields(): array {
-        return array(
-            'enabled'              => array(
-                'title'   => __( 'Enable/Disable', 'Frakmenta' ),
-                'label'   => 'Enable ' . $this->get_method_title() . ' Gateway',
-                'type'    => 'checkbox',
-                'default' => 'no',
-            ),
-            'title'                => array(
-                'title'    => __( 'Title', 'Frakmenta' ),
-                'type'     => 'text',
-                'desc_tip' => __( 'This controls the title which the user sees during checkout.', 'frakmenta' ),
-                'default'  => $this->get_method_title(),
-            ),
-            'initial_order_status' => array(
-                'title'    => __( 'Initial Order Status', 'Frakmenta' ),
-                'type'     => 'select',
-                'options'  => $this->get_order_statuses(),
-                'desc_tip' => __( 'Initial order status for this payment method.', 'Frakmenta' ),
-                'default'  => 'wc-default',
-            ),
-            'countries'            => array(
-                'title'       => __( 'Pais', 'Frakmenta' ),
-                'type'        => 'multiselect',
-                'description' => __( 'If you select one or more countries, this payment method will be shown in the checkout page, if the payment address`s country of the customer match with the selected values. Leave blank for no restrictions.', 'frakmenta' ),
-                'desc_tip'    => __( 'For most operating system and configurations, you must hold Ctrl or Cmd in your keyboard, while you click in the options to select more than one value.', 'frakmenta' ),
-                'options'     => $this->get_countries(),
-                'default'     => $this->get_option( 'countries', array() ),
-            ),
-        );
+        return ['enabled'              => ['title'   => __( 'Enable/Disable', 'Frakmenta' ), 'label'   => 'Enable ' . $this->get_method_title() . ' Gateway', 'type'    => 'checkbox', 'default' => 'no'], 'title'                => ['title'    => __( 'Title', 'Frakmenta' ), 'type'     => 'text', 'desc_tip' => __( 'This controls the title which the user sees during checkout.', 'frakmenta' ), 'default'  => $this->get_method_title()], 'initial_order_status' => ['title'    => __( 'Initial Order Status', 'Frakmenta' ), 'type'     => 'select', 'options'  => $this->get_order_statuses(), 'desc_tip' => __( 'Initial order status for this payment method.', 'Frakmenta' ), 'default'  => 'wc-default'], 'countries'            => ['title'       => __( 'Pais', 'Frakmenta' ), 'type'        => 'multiselect', 'description' => __( 'If you select one or more countries, this payment method will be shown in the checkout page, if the payment address`s country of the customer match with the selected values. Leave blank for no restrictions.', 'frakmenta' ), 'desc_tip'    => __( 'For most operating system and configurations, you must hold Ctrl or Cmd in your keyboard, while you click in the options to select more than one value.', 'frakmenta' ), 'options'     => $this->get_countries(), 'default'     => $this->get_option( 'countries', [] )]];
     }
 
     /**
@@ -216,10 +185,7 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         $order         = wc_get_order( $order_id );
         $paymentUrl = $order_service->create_order_frakmenta($order);
 
-        return array(
-            'result'   => 'success',
-            'redirect' => esc_url_raw($paymentUrl),
-        );
+        return ['result'   => 'success', 'redirect' => esc_url_raw($paymentUrl)];
     }
 
     /**

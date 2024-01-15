@@ -35,22 +35,21 @@ class Loader {
      *
 	 * @var     array    The actions registered with WordPress to fire when the plugin loads.
 	 */
-    private $actions;
+    private $actions = [];
 
 	/**
 	 * The array of filters registered with WordPress.
 	 *
 	 * @var      array    The filters registered with WordPress to fire when the plugin loads.
 	 */
-    private $filters;
+    private $filters = [];
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 */
-	public function __construct() {
-		$this->actions = array();
-		$this->filters = array();
-	}
+	public function __construct()
+ {
+ }
 
 	/**
 	 * Add a new action to the collection to be registered with WordPress.
@@ -93,13 +92,7 @@ class Loader {
 	 * @return     array                          The collection of actions and filters registered with WordPress.
 	 */
 	private function add( array $hooks, string $hook, $component, string $callback, int $priority, int $accepted_args ) {
-		$hooks[] = array(
-			'hook'          => $hook,
-			'component'     => $component,
-			'callback'      => $callback,
-			'priority'      => $priority,
-			'accepted_args' => $accepted_args,
-		);
+		$hooks[] = ['hook'          => $hook, 'component'     => $component, 'callback'      => $callback, 'priority'      => $priority, 'accepted_args' => $accepted_args];
 		return $hooks;
 	}
 
@@ -110,10 +103,10 @@ class Loader {
 	 */
 	public function init() {
 		foreach ( $this->filters as $hook ) {
-			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+			add_filter( $hook['hook'], [$hook['component'], $hook['callback']], $hook['priority'], $hook['accepted_args'] );
 		}
 		foreach ( $this->actions as $hook ) {
-			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
+			add_action( $hook['hook'], [$hook['component'], $hook['callback']], $hook['priority'], $hook['accepted_args'] );
 		}
 	}
 

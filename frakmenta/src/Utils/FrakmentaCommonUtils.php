@@ -32,20 +32,10 @@ class FrakmentaCommonUtils
     }
 
     public static function get_frakmenta_current_parameters(){
-        return array(
-            "FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'),
-            "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'),
-            "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
-            "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'),
-            "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'),
-            "FRAKMENTA_MODE" => get_option('FRAKMENTA_MODE'),
-            "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'),
-            "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT'),
-            "FRAKMENTA_PRIVATE_KEY" => get_option('FRAKMENTA_PRIVATE_KEY')
-        );
+        return ["FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'), "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'), "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'), "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'), "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'), "FRAKMENTA_MODE" => get_option('FRAKMENTA_MODE'), "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'), "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT'), "FRAKMENTA_PRIVATE_KEY" => get_option('FRAKMENTA_PRIVATE_KEY')];
     }
 
     public static function clean_operation_id_frakmenta($id){
-        return substr($id, 10);
+        return substr((string) $id, 10);
     }
 }

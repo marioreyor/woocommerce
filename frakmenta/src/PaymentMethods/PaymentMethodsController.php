@@ -49,10 +49,10 @@ class PaymentMethodsController {
      */
     public function enqueue_styles(): void {
         if ( is_checkout() || is_product()) {
-            wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta.css', array(), FRAKMENTA_PLUGIN_VERSION, 'all' );
-            wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta_additionals.css', array(), FRAKMENTA_PLUGIN_VERSION, 'all' );
-            wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta_style.css', array(), FRAKMENTA_PLUGIN_VERSION, 'all' );
-            wp_enqueue_style( 'frakmenta-remote-widget-css', get_option('FRAKMENTA_URL').'/css/widget-ecommerce.css', array(), FRAKMENTA_PLUGIN_VERSION);
+            wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta.css', [], FRAKMENTA_PLUGIN_VERSION, 'all' );
+            wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta_additionals.css', [], FRAKMENTA_PLUGIN_VERSION, 'all' );
+            wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta_style.css', [], FRAKMENTA_PLUGIN_VERSION, 'all' );
+            wp_enqueue_style( 'frakmenta-remote-widget-css', get_option('FRAKMENTA_URL').'/css/widget-ecommerce.css', [], FRAKMENTA_PLUGIN_VERSION);
         }
     }
 
@@ -71,31 +71,27 @@ class PaymentMethodsController {
 
     public function enqueue_scripts(): void {
 
-        $frakmenta_params = array(
-            "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
-            "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'),
-            "FRAKMENTA_LOGO" => FRAKMENTA_PLUGIN_URL . '/assets/commons/img/logo_frakmenta.png'
-        );
+        $frakmenta_params = ["FRAKMENTA_URL" => get_option('FRAKMENTA_URL'), "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'), "FRAKMENTA_LOGO" => FRAKMENTA_PLUGIN_URL . '/assets/commons/img/logo_frakmenta.png'];
 
         if (is_product() && !empty(get_option("FRAKMENTA_PRODUCT_OPTION"))) {
 
             $frakmenta_params["FRAKMENTA_PRODUCT_PRICE"] = $this->get_product_price();
 
-            wp_register_script('frakmenta-product-local-js', FRAKMENTA_PLUGIN_URL . '/assets/products/js/frakmenta_front_products.js', array('jquery'));
+            wp_register_script('frakmenta-product-local-js', FRAKMENTA_PLUGIN_URL . '/assets/products/js/frakmenta_front_products.js', ['jquery']);
             wp_localize_script('frakmenta-product-local-js', 'frakmentaParams', $frakmenta_params );
             wp_enqueue_script('frakmenta-product-local-js');
 
-            wp_register_script('frakmenta-product-remote-js', get_option('FRAKMENTA_URL').'/js/widgetEcommerce.js', array( 'jquery' ), FRAKMENTA_PLUGIN_VERSION, false );
+            wp_register_script('frakmenta-product-remote-js', get_option('FRAKMENTA_URL').'/js/widgetEcommerce.js', ['jquery'], FRAKMENTA_PLUGIN_VERSION, false );
             wp_localize_script('frakmenta-product-remote-js', 'frakmentaParams', $frakmenta_params );
             wp_enqueue_script('frakmenta-product-remote-js');
         }
 
         if (is_checkout()) {
-            wp_register_script('frakmenta-payment-remote-js', get_option('FRAKMENTA_URL').'/js/widgetEcommerce.js', array( 'jquery' ), FRAKMENTA_PLUGIN_VERSION, false );
+            wp_register_script('frakmenta-payment-remote-js', get_option('FRAKMENTA_URL').'/js/widgetEcommerce.js', ['jquery'], FRAKMENTA_PLUGIN_VERSION, false );
             wp_localize_script('frakmenta-payment-remote-js', 'frakmentaParams', $frakmenta_params );
             wp_enqueue_script('frakmenta-payment-remote-js');
 
-            wp_register_script('frakmenta-payment-local-js', FRAKMENTA_PLUGIN_URL . '/assets/payments/js/frakmenta_check_out.js', array('jquery'));
+            wp_register_script('frakmenta-payment-local-js', FRAKMENTA_PLUGIN_URL . '/assets/payments/js/frakmenta_check_out.js', ['jquery']);
             wp_localize_script('frakmenta-payment-local-js', 'frakmentaParams', $frakmenta_params );
             wp_enqueue_script('frakmenta-payment-local-js');
         }
@@ -105,7 +101,6 @@ class PaymentMethodsController {
     /**
      * Merge existing gateways and Frakmenta
      *
-     * @param array $gateways
      * @return array
      */
     public static function set_gateway( array $gateways ): array {
@@ -115,7 +110,6 @@ class PaymentMethodsController {
     /**
      * Filter the payment methods by the countries defined in their settings
      *
-     * @param   array $payment_gateways
      * @return  array
      */
     public function filter_gateway_per_country( array $payment_gateways ): array {

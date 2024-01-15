@@ -29,22 +29,14 @@ namespace Frakmenta\WooCommerce\Exceptions;
  * @package Frakmenta\WooCommerce\Exceptions
  */
 class MissingDependencyException extends \Exception {
-
-    /**
-     * The missing required plugins names
-     *
-     * @var array
-     */
-    private $missing_plugin_names;
-
     /**
      * MissingDependencyException constructor.
-     *
-     * @param array $missing_plugins
      */
-    public function __construct( array $missing_plugins ) {
+    public function __construct(/**
+     * The missing required plugins names
+     */
+    private readonly array $missing_plugin_names) {
         parent::__construct();
-        $this->missing_plugin_names = $missing_plugins;
     }
 
     /**
@@ -55,5 +47,4 @@ class MissingDependencyException extends \Exception {
     public function get_missing_plugin_names(): array {
         return $this->missing_plugin_names;
     }
-
 }

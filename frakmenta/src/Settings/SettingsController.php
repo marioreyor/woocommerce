@@ -42,7 +42,6 @@ class SettingsController {
      * @since 4.0.0
      * @see https://developer.wordpress.org/reference/hooks/option_option/
      *
-     * @param   string $value
      * @return  boolean
      */
     public function filter_frakmenta_settings_as_booleans( string $value ): bool {
@@ -57,7 +56,6 @@ class SettingsController {
      *
      * @see https://developer.wordpress.org/reference/hooks/option_option/
      *
-     * @param   string $value
      * @return  integer
      */
     public function filter_frakmenta_settings_as_int( string $value ): int {
@@ -71,7 +69,7 @@ class SettingsController {
      * @return void
      */
     public function enqueue_styles(): void {
-        wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta.css', array(), FRAKMENTA_PLUGIN_VERSION, 'all' );
+        wp_enqueue_style( 'frakmenta-commons-css', FRAKMENTA_PLUGIN_URL . '/assets/commons/css/frakmenta.css', [], FRAKMENTA_PLUGIN_VERSION, 'all' );
     }
 
     /**
@@ -84,18 +82,9 @@ class SettingsController {
     public function enqueue_scripts():void {
         self::default_values_plugin();
 
-        $frakmenta_vars = array(
-                    "FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'),
-                    "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'),
-                    "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
-                    "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'),
-                    "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'),
-                    "FRAKMENTA_MODE" => get_option('FRAKMENTA_TEST_MODE'),
-                    "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'),
-                    "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT')
-        );
+        $frakmenta_vars = ["FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'), "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'), "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'), "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'), "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'), "FRAKMENTA_MODE" => get_option('FRAKMENTA_TEST_MODE'), "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'), "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT')];
 
-        wp_register_script( 'frakmenta-admin-js', FRAKMENTA_PLUGIN_URL . '/assets/admin/js/frakmenta-admin.js', array( 'jquery' ), FRAKMENTA_PLUGIN_VERSION, false );
+        wp_register_script( 'frakmenta-admin-js', FRAKMENTA_PLUGIN_URL . '/assets/admin/js/frakmenta-admin.js', ['jquery'], FRAKMENTA_PLUGIN_VERSION, false );
 
         wp_localize_script( 'frakmenta-admin-js', 'frakmenta', $frakmenta_vars );
         wp_enqueue_script( 'frakmenta-admin-js' );
@@ -115,7 +104,7 @@ class SettingsController {
             __( 'Configuración Frakmenta', 'frakmenta' ),
             'manage_woocommerce',
             'frakmenta-settings',
-            array( $this, 'display_frakmenta_settings' )
+            $this->display_frakmenta_settings(...)
         );
     }
 
@@ -163,12 +152,10 @@ class SettingsController {
         add_settings_field(
             $field['id'],
             $this->generate_label_for_settings_field( $field ),
-            array( $this, 'display_field' ),
+            $this->display_field(...),
             'frakmenta-settings-' . $tab_key,
             $tab_key,
-            array(
-                'field' => $field,
-            )
+            ['field' => $field]
         );
     }
 
@@ -189,7 +176,6 @@ class SettingsController {
      * Filter which set the settings page and adds a screen options of WooCommerce
      *
      * @see http://hookr.io/filters/woocommerce_screen_ids/
-     * @param   array $screen
      * @return  array
      */
     public function set_wc_screen_options_in_common_settings_page( array $screen ): array {
@@ -201,19 +187,13 @@ class SettingsController {
      * Register setting
      *
      * @see https://developer.wordpress.org/reference/functions/register_setting/
-     * @param   array  $field
-     * @param   string $tab_key
      * @return  void
      */
     private function register_setting( array $field, string $tab_key ): void {
         register_setting(
             'frakmenta-settings-' . $tab_key,
             $field['id'],
-            array(
-                'type'              => $field['setting_type'],
-                'show_in_rest'      => false,
-                'sanitize_callback' => $field['callback'],
-            )
+            ['type'              => $field['setting_type'], 'show_in_rest'      => false, 'sanitize_callback' => $field['callback']]
         );
     }
 
@@ -222,15 +202,13 @@ class SettingsController {
      *
      * @see https://developer.wordpress.org/reference/functions/add_settings_section/
      *
-     * @param   string $section_key
-     * @param   string $section_title
      * @return  void
      */
     private function add_settings_section( string $section_key, string $section_title ): void {
         add_settings_section(
             $section_key,
             $section_title,
-            array( $this, 'display_intro_section' ),
+            $this->display_intro_section(...),
             'frakmenta-settings-' . $section_key
         );
     }
@@ -239,7 +217,6 @@ class SettingsController {
      * Callback to display the title on each settings sections
      *
      * @see https://developer.wordpress.org/reference/functions/add_settings_section/
-     * @param   array $args
      * @return  void
      */
     public function display_intro_section( array $args ): void {
@@ -327,16 +304,7 @@ class SettingsController {
     //function in plugin file with return value,
     //  custom fetch query
     frakmenta_default_configuration();
-    return json_encode(array(
-        "FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'),
-        "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'),
-        "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
-        "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'),
-        "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'),
-        "FRAKMENTA_MODE" => get_option('FRAKMENTA_TEST_MODE'),
-        "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'),
-        "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT')
-    ));
+    return json_encode(["FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'), "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'), "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'), "FRAKMENTA_PUBLIC_KEY" => get_option('FRAKMENTA_PUBLIC_KEY'), "FRAKMENTA_MERCHANT_ID" => get_option('FRAKMENTA_MERCHANT_ID'), "FRAKMENTA_MODE" => get_option('FRAKMENTA_TEST_MODE'), "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'), "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT')]);
 }
 
 }

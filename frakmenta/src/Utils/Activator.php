@@ -39,7 +39,6 @@ class Activator {
     /**
      * Fired during plugin activation according if is multisite or not.
      *
-     * @param  bool $network_wide
      * @return  void
      */
     public function activate( bool $network_wide ): void {
@@ -92,9 +91,7 @@ class Activator {
      * @return array
      */
     private function get_blogs_ids(): array {
-        $args      = array(
-            'fields' => 'ids',
-        );
+        $args      = ['fields' => 'ids'];
         $blogs_ids = get_sites( $args );
         return $blogs_ids;
     }

@@ -33,9 +33,9 @@ use Frakmenta\WooCommerce\Exceptions\MissingDependencyException;
  */
 class DependencyChecker {
 
-    const REQUIRED_PLUGINS = array(
-        'WooCommerce' => 'woocommerce/woocommerce.php',
-    );
+    final public const REQUIRED_PLUGINS = [
+        'WooCommerce' => 'woocommerce/woocommerce.php'
+    ];
 
     /**
      * Check if there is a dependency missing to make the plugin work
@@ -56,13 +56,12 @@ class DependencyChecker {
      * @return  array
      */
     private function get_missing_plugins_list(): array {
-        return array_keys( array_filter( self::REQUIRED_PLUGINS, array( $this, 'is_plugin_inactive' ) ) );
+        return array_keys( array_filter( self::REQUIRED_PLUGINS, $this->is_plugin_inactive(...) ) );
     }
 
     /**
      * Check if a certain plugin is inactive
      *
-     * @param   string $plugin_path
      * @return  boolean
      */
     private function is_plugin_inactive( string $plugin_path ): bool {

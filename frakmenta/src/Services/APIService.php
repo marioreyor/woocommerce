@@ -31,12 +31,10 @@ class APIService
 
         $curl = curl_init();
 
-        $params = array(
-            'Content-Type: application/json'
-        );
+        $params = ['Content-Type: application/json'];
 
         if ($method=='POST')
-            array_push($params, 'Content-Length: ' . strlen($data));
+            array_push($params, 'Content-Length: ' . strlen((string) $data));
 
         $request = [
             CURLOPT_URL => ($method=='GET' ? $url.http_build_query($data) : $url),

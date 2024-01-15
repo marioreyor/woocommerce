@@ -21,7 +21,7 @@
  */
 
 $fk_add_meta_nonce = wp_create_nonce( 'nds_add_user_meta_form_nonce' );
-$fk_parameters = array(
+$fk_parameters = [
         "FRAKMENTA_DELEGATION" => get_option('FRAKMENTA_DELEGATION'),
         "FRAKMENTA_EXIST_ACCOUNT" => get_option('FRAKMENTA_EXIST_ACCOUNT'),
         "FRAKMENTA_URL" => get_option('FRAKMENTA_URL'),
@@ -31,7 +31,7 @@ $fk_parameters = array(
         "FRAKMENTA_MODE" => get_option('FRAKMENTA_MODE'),
         "FRAKMENTA_PRODUCT_OPTION" => get_option('FRAKMENTA_PRODUCT_OPTION'),
         "LOCATION_SIMULATOR_DEFAULT" => get_option('LOCATION_SIMULATOR_DEFAULT')
-    );
+    ];
 
 if (!empty($_POST['submitButton'])){
     echo 'recibido un submit de la pagina de configuración';
