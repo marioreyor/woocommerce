@@ -57,6 +57,6 @@ class APIService
 
         curl_close($curl);
 
-        return utf8_encode($response);
+        return mb_convert_encoding($response, 'UTF-8', 'ISO-8859-1');
     }
 }
