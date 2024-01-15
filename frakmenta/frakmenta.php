@@ -71,9 +71,7 @@ use Frakmenta\WooCommerce\Main;
  * The code that runs during plugin activation.
  * The class is documented in src/utils/Activator.php
  *
- * @param bool $network_wide
  * @see     https://developer.wordpress.org/reference/functions/register_activation_hook/
- *
  * @since   4.0.0
  */
 function activate_frakmenta(bool $network_wide): void
