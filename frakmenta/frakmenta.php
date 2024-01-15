@@ -45,7 +45,7 @@ if (!defined('ABSPATH')) {
 /**
  * Plugin version
  */
-define('FRAKMENTA_PLUGIN_VERSION', '1.1.6');
+define('FRAKMENTA_PLUGIN_VERSION', '1.1.7');
 
 /**
  * Plugin URL
