@@ -74,6 +74,7 @@ function get_scripts_params(){
 }
 
 function get_commerce_limits(){
+
     merchantLimits = jQuery.getJSON(fkApiUrl + "/api/fk/v2/limits?apikey="+fkApiKey, function() {
           })
             .done(function(data,status,xhr) {

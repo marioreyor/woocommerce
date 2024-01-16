@@ -91,6 +91,7 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         $this->checkout_fields_ids = $this->get_checkout_fields_ids();
         $this->icon                = $this->get_logo();
         $this->form_fields         = $this->add_form_fields();
+        error_log("BasePaymentMethod Constructor" );
         $this->init_form_fields();
         $this->init_settings();
 
@@ -168,8 +169,37 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
      * @return  array
      */
     public function add_form_fields(): array {
-        return ['enabled'              => ['title'   => __( 'Enable/Disable', 'Frakmenta' ), 'label'   => 'Enable ' . $this->get_method_title() . ' Gateway', 'type'    => 'checkbox', 'default' => 'no'], 'title'                => ['title'    => __( 'Title', 'Frakmenta' ), 'type'     => 'text', 'desc_tip' => __( 'This controls the title which the user sees during checkout.', 'frakmenta' ), 'default'  => $this->get_method_title()], 'initial_order_status' => ['title'    => __( 'Initial Order Status', 'Frakmenta' ), 'type'     => 'select', 'options'  => $this->get_order_statuses(), 'desc_tip' => __( 'Initial order status for this payment method.', 'Frakmenta' ), 'default'  => 'wc-default'], 'countries'            => ['title'       => __( 'Pais', 'Frakmenta' ), 'type'        => 'multiselect', 'description' => __( 'If you select one or more countries, this payment method will be shown in the checkout page, if the payment address`s country of the customer match with the selected values. Leave blank for no restrictions.', 'frakmenta' ), 'desc_tip'    => __( 'For most operating system and configurations, you must hold Ctrl or Cmd in your keyboard, while you click in the options to select more than one value.', 'frakmenta' ), 'options'     => $this->get_countries(), 'default'     => $this->get_option( 'countries', [] )]];
-    }
+        error_log("add_form_fields");
+
+        return array(
+            'enabled'              => array(
+                'title'   => __( 'Enable/Disable', 'Frakmenta' ),
+                'label'   => 'Enable ' . $this->get_method_title() . ' Gateway',
+                'type'    => 'checkbox',
+                'default' => 'no',
+            ),
+            'title'                => array(
+                'title'    => __( 'Title', 'Frakmenta' ),
+                'type'     => 'text',
+                'desc_tip' => __( 'This controls the title which the user sees during checkout.', 'frakmenta' ),
+                'default'  => $this->get_method_title(),
+            ),
+            'initial_order_status' => array(
+                'title'    => __( 'Initial Order Status', 'Frakmenta' ),
+                'type'     => 'select',
+                'options'  => $this->get_order_statuses(),
+                'desc_tip' => __( 'Initial order status for this payment method.', 'Frakmenta' ),
+                'default'  => 'wc-default',
+            ),
+            'countries'            => array(
+                'title'       => __( 'Pais', 'Frakmenta' ),
+                'type'        => 'multiselect',
+                'description' => __( 'If you select one or more countries, this payment method will be shown in the checkout page, if the payment address`s country of the customer match with the selected values. Leave blank for no restrictions.', 'frakmenta' ),
+                'desc_tip'    => __( 'For most operating system and configurations, you must hold Ctrl or Cmd in your keyboard, while you click in the options to select more than one value.', 'frakmenta' ),
+                'options'     => $this->get_countries(),
+                'default'     => $this->get_option( 'countries', [] ),
+            ),
+        );    }
 
     /**
      * Process the payment and return the result.
@@ -196,7 +226,7 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         global $woocommerce;
         $realTotalCart = $woocommerce->cart->total;
         $totalCart = $realTotalCart * 100;
-
+        error_log("payment_fields");
         if ($realTotalCart >= $this->min_amount && $realTotalCart <= $this->max_amount)
             echo "<input type='hidden' name='validate_payfrakmenta' value='1' required readonly>";
         else

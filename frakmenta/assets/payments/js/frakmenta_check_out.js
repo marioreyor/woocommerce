@@ -23,6 +23,7 @@ function get_scripts_params_checkout_frakmenta(){
     fkApiUrl = frakmentaParams.FRAKMENTA_URL;
     fkEcommerceUrl = frakmentaParams.FRAKMENTA_URL;
     logoFrakmenta = frakmentaParams.FRAKMENTA_LOGO;
+    console.log(fkApiKey, fkApiUrl, fkEcommerceUrl, logoFrakmenta);
 }
 
 function iniciar_simulador_checkout_frakmenta(){
