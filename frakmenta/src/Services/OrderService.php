@@ -75,16 +75,16 @@ class OrderService {
                 $link = $productDetail->get_permalink();
             }
 
-            array_push($cart_products, [
-                'id' => strval($item->get_product_id()),
-                'name' => substr((string) $item->get_name(), 0, 900),
+            $cart_products[] = [
+                'id' => (string)$item->get_product_id(),
+                'name' => substr((string)$item->get_name(), 0, 900),
                 'quantity' => $item->get_quantity(),
-                'price' => number_format(floatval($item->get_total()),2, '.',''),
-                'tax_rate' => number_format(floatval($item->get_total_tax()),2, '.',''),
+                'price' => number_format((float)$item->get_total(), 2, '.', ''),
+                'tax_rate' => number_format((float)$item->get_total_tax(), 2, '.', ''),
                 'description' => $item->get_name(),
                 'url' => $link,
                 'image_url' => $link
-            ]);
+            ];
         }
 
         $customer = [
@@ -139,8 +139,8 @@ class OrderService {
         $success_url = $order_received_url;
         $notification_url = 'https://frakmenta.com';
 
-        $invoice_id = hash("sha256", (strval($frakmenta_parameters['FRAKMENTA_MERCHANT_ID'].'-'.$order->get_id().'-'.date('YmdHis'))));
-        $product_price = floatval(number_format(floatval($order->get_total()),2, '.', '')*100);
+        $invoice_id = hash("sha256", ((string)($frakmenta_parameters['FRAKMENTA_MERCHANT_ID'] . '-' . $order->get_id() . '-' . date('YmdHis'))));
+        $product_price = (float)(number_format((float)$order->get_total(), 2, '.', '') * 100);
 
         $flowConfig = [
             'success_url' => $success_url,
@@ -206,7 +206,7 @@ class OrderService {
             "type" => "e-commerce",
             "operation_id" => $idOperation,
             "signature" => $signature
-        ]);
+        ], JSON_THROW_ON_ERROR);
 
         $response = $this->connectApi->connection($frakmenta_parameters['FRAKMENTA_URL'].'/api/fk/v2/operations/status', $data, 'POST');
 

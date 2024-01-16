@@ -80,8 +80,8 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         $this->method_title        = $this->get_payment_method_title();
         if (is_checkout()) {
             $this->method_title    = $this->get_payment_method_title_checkout(
-                floatval($this->frakmentaMerchantLimits['min_import']),
-                floatval($this->frakmentaMerchantLimits['max_import'])
+                (float)$this->frakmentaMerchantLimits['min_import'],
+                (float)$this->frakmentaMerchantLimits['max_import']
             );
         }
 
@@ -98,14 +98,13 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
         $this->title                = $this->get_payment_method_title();
         if (is_checkout()) {
             $this->title            = $this->get_payment_method_title_checkout(
-                floatval($this->frakmentaMerchantLimits['min_import']),
-                floatval($this->frakmentaMerchantLimits['max_import'])
+                (float)$this->frakmentaMerchantLimits['min_import'],
+                (float)$this->frakmentaMerchantLimits['max_import']
             );
         }
 
         $this->description          = $this->get_option( 'description' );
         $this->countries            = $this->get_option( 'countries' );
-        $this->initial_order_status = $this->get_option( 'initial_order_status', false );
         $this->initial_order_status = $this->get_option( 'initial_order_status', false );
         $this->errors               = [];
 
