@@ -25,6 +25,7 @@ use Exception;
 use Frakmenta\WooCommerce\Services\OrderService;
 use Frakmenta\WooCommerce\Utils\Logger;
 use WC_Countries;
+use WC_Gateway_COD;
 use WC_Payment_Gateway;
 use WP_Error;
 
@@ -169,37 +170,37 @@ abstract class BasePaymentMethod extends WC_Payment_Gateway implements PaymentMe
      * @return  array
      */
     public function add_form_fields(): array {
-        error_log("add_form_fields");
 
-        return array(
-            'enabled'              => array(
+
+        return [
+            'enabled'              => [
                 'title'   => __( 'Enable/Disable', 'Frakmenta' ),
                 'label'   => 'Enable ' . $this->get_method_title() . ' Gateway',
                 'type'    => 'checkbox',
                 'default' => 'no',
-            ),
-            'title'                => array(
+            ],
+            'title'                => [
                 'title'    => __( 'Title', 'Frakmenta' ),
                 'type'     => 'text',
                 'desc_tip' => __( 'This controls the title which the user sees during checkout.', 'frakmenta' ),
                 'default'  => $this->get_method_title(),
-            ),
-            'initial_order_status' => array(
+            ],
+            'initial_order_status' => [
                 'title'    => __( 'Initial Order Status', 'Frakmenta' ),
                 'type'     => 'select',
                 'options'  => $this->get_order_statuses(),
                 'desc_tip' => __( 'Initial order status for this payment method.', 'Frakmenta' ),
                 'default'  => 'wc-default',
-            ),
-            'countries'            => array(
+            ],
+            'countries'            => [
                 'title'       => __( 'Pais', 'Frakmenta' ),
                 'type'        => 'multiselect',
                 'description' => __( 'If you select one or more countries, this payment method will be shown in the checkout page, if the payment address`s country of the customer match with the selected values. Leave blank for no restrictions.', 'frakmenta' ),
                 'desc_tip'    => __( 'For most operating system and configurations, you must hold Ctrl or Cmd in your keyboard, while you click in the options to select more than one value.', 'frakmenta' ),
                 'options'     => $this->get_countries(),
                 'default'     => $this->get_option( 'countries', [] ),
-            ),
-        );    }
+            ]
+        ];    }
 
     /**
      * Process the payment and return the result.
